@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, TouchableOpacity,
-  Alert, ScrollView
+  View, Text, StyleSheet, TouchableOpacity, ScrollView
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -12,29 +11,16 @@ export default function ProfileScreen({ navigation }) {
     cargarUsuario();
   }, []);
 
-  const cargarUsuario = async () => {
-    try {
-      const data = await AsyncStorage.getItem('userData');
-      if (data) setUsuario(JSON.parse(data));
-    } catch (e) {
-      console.log(e);
-    }
+const cargarUsuario = () => {
+    const data = localStorage.getItem('userData');
+    if (data) setUsuario(JSON.parse(data));
   };
 
-  const handleLogout = async () => {
-    Alert.alert('Cerrar Sesión', '¿Estás seguro?', [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Salir', style: 'destructive',
-        onPress: async () => {
-          await AsyncStorage.removeItem('userToken');
-          await AsyncStorage.removeItem('userData');
-          navigation.replace('Login');
-        }
-      }
-    ]);
+const handleLogout = () => {
+    localStorage.removeItem('userToken');
+    window.location.reload();
   };
-
+    
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.avatarContainer}>

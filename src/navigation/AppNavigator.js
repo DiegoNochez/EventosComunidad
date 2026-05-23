@@ -7,11 +7,13 @@ import { ActivityIndicator, View } from 'react-native';
 
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
-
-// Placeholders temporales para las pantallas de Jimmy y Nelson
-import { Text } from 'react-native';
-const EventsScreen = () => <View style={{flex:1,justifyContent:'center',alignItems:'center'}}><Text>Eventos</Text></View>;
 import ProfileScreen from '../screens/profile/ProfileScreen';
+
+const EventsScreen = () => (
+  <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+  </View>
+);
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -24,31 +26,43 @@ function MainTabs() {
   );
 }
 
+function AuthStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+    </Stack.Navigator>
+  );
+}
+
 export default function AppNavigator() {
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(false);
 
-  useEffect(() => {
-    AsyncStorage.getItem('userToken').then(t => {
-      setToken(t);
-      setLoading(false);
-    });
+useEffect(() => {
+    checkLogin();
   }, []);
+const checkLogin = () => {
+    const token = localStorage.getItem('userToken');
+    setLoggedIn(!!token);
+    setLoading(false);
+  };
 
   if (loading) {
-    return <View style={{flex:1,justifyContent:'center'}}><ActivityIndicator size="large" color="#4A90D9"/></View>;
+    return (
+      <View style={{flex:1,justifyContent:'center'}}>
+        <ActivityIndicator size="large" color="#4A90D9"/>
+      </View>
+    );
   }
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {token ? (
+        {loggedIn ? (
           <Stack.Screen name="MainTabs" component={MainTabs} />
         ) : (
-          <>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-          </>
+          <Stack.Screen name="Auth" component={AuthStack} />
         )}
       </Stack.Navigator>
     </NavigationContainer>

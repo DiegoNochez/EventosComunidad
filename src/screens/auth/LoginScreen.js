@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
-import {
-  View, Text, TextInput, TouchableOpacity,
-  StyleSheet, Alert, Image
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Por favor completa todos los campos');
+      alert('Por favor completa todos los campos');
       return;
     }
-    try {
-      await AsyncStorage.setItem('userToken', email);
-      navigation.replace('MainTabs');
-    } catch (e) {
-      Alert.alert('Error', 'No se pudo iniciar sesión');
+    const data = localStorage.getItem('userData');
+    if (!data) {
+      alert('No hay usuarios registrados, regístrate primero');
+      return;
+    }
+    const usuario = JSON.parse(data);
+    if (usuario.email === email && usuario.password === password) {
+      localStorage.setItem('userToken', email);
+      window.location.reload();
+    } else {
+      alert('Correo o contraseña incorrectos');
     }
   };
 
@@ -26,27 +28,11 @@ export default function LoginScreen({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>EventosComunidad</Text>
       <Text style={styles.subtitle}>Inicia sesión para continuar</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Correo electrónico"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-
+      <TextInput style={styles.input} placeholder="Correo electrónico" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
+      <TextInput style={styles.input} placeholder="Contraseña" value={password} onChangeText={setPassword} secureTextEntry />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Iniciar Sesión</Text>
       </TouchableOpacity>
-
       <TouchableOpacity onPress={() => navigation.navigate('Register')}>
         <Text style={styles.link}>¿No tienes cuenta? Regístrate</Text>
       </TouchableOpacity>

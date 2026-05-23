@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View, Text, TextInput, TouchableOpacity,
-  StyleSheet, Alert, ScrollView
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 export default function RegisterScreen({ navigation }) {
   const [nombre, setNombre] = useState('');
@@ -11,63 +7,32 @@ export default function RegisterScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [confirmar, setConfirmar] = useState('');
 
-  const handleRegister = async () => {
+  const handleRegister = () => {
     if (!nombre || !email || !password || !confirmar) {
-      Alert.alert('Error', 'Por favor completa todos los campos');
+      alert('Por favor completa todos los campos');
       return;
     }
     if (password !== confirmar) {
-      Alert.alert('Error', 'Las contraseñas no coinciden');
+      alert('Las contraseñas no coinciden');
       return;
     }
-    try {
-      const usuario = { nombre, email };
-      await AsyncStorage.setItem('userToken', email);
-      await AsyncStorage.setItem('userData', JSON.stringify(usuario));
-      navigation.replace('MainTabs');
-    } catch (e) {
-      Alert.alert('Error', 'No se pudo registrar');
-    }
+    const usuario = { nombre, email, password };
+    localStorage.setItem('userData', JSON.stringify(usuario));
+    localStorage.setItem('userToken', email);
+    window.location.reload();
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Crear Cuenta</Text>
       <Text style={styles.subtitle}>Únete a la comunidad</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Nombre completo"
-        value={nombre}
-        onChangeText={setNombre}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Correo electrónico"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirmar contraseña"
-        value={confirmar}
-        onChangeText={setConfirmar}
-        secureTextEntry
-      />
-
+      <TextInput style={styles.input} placeholder="Nombre completo" value={nombre} onChangeText={setNombre} />
+      <TextInput style={styles.input} placeholder="Correo electrónico" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
+      <TextInput style={styles.input} placeholder="Contraseña" value={password} onChangeText={setPassword} secureTextEntry />
+      <TextInput style={styles.input} placeholder="Confirmar contraseña" value={confirmar} onChangeText={setConfirmar} secureTextEntry />
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Registrarse</Text>
       </TouchableOpacity>
-
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Text style={styles.link}>¿Ya tienes cuenta? Inicia sesión</Text>
       </TouchableOpacity>

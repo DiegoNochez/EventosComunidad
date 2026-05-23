@@ -11,8 +11,7 @@ import RegisterScreen from '../screens/auth/RegisterScreen';
 // Placeholders temporales para las pantallas de Jimmy y Nelson
 import { Text } from 'react-native';
 const EventsScreen = () => <View style={{flex:1,justifyContent:'center',alignItems:'center'}}><Text>Eventos</Text></View>;
-const ProfileScreen = () => <View style={{flex:1,justifyContent:'center',alignItems:'center'}}><Text>Perfil</Text></View>;
-
+import ProfileScreen from '../screens/profile/ProfileScreen';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 

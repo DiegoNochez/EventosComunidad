@@ -8,11 +8,7 @@ import { ActivityIndicator, View } from 'react-native';
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
-
-const EventsScreen = () => (
-  <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-  </View>
-);
+import EventsScreen from '../screens/events/EventsScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

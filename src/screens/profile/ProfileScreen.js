@@ -1,26 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View, Text, StyleSheet, TouchableOpacity, ScrollView
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../config/firebase';
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreen() {
   const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
-    cargarUsuario();
+    const user = auth.currentUser;
+    if (user) {
+      setUsuario({
+        nombre: user.displayName || 'Usuario',
+        email: user.email,
+      });
+    }
   }, []);
 
-const cargarUsuario = () => {
-    const data = localStorage.getItem('userData');
-    if (data) setUsuario(JSON.parse(data));
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      window.location.reload();
+    } catch (e) {
+      alert('Error al cerrar sesión');
+    }
   };
 
-const handleLogout = () => {
-    localStorage.removeItem('userToken');
-    window.location.reload();
-  };
-    
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.avatarContainer}>

@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator, View } from 'react-native';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../config/firebase';
 
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
+import EventsScreen from '../screens/events/EventsScreen';
 import SocialScreen from '../screens/SocialScreen';
 import HistorialScreen from '../screens/HistorialScreen';
-import EventsScreen from '../screens/events/EventsScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,21 +38,20 @@ function AuthStack() {
 
 export default function AppNavigator() {
   const [loading, setLoading] = useState(true);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
 
-useEffect(() => {
-    checkLogin();
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+    return unsubscribe;
   }, []);
-const checkLogin = () => {
-    const token = localStorage.getItem('userToken');
-    setLoggedIn(!!token);
-    setLoading(false);
-  };
 
   if (loading) {
     return (
-      <View style={{flex:1,justifyContent:'center'}}>
-        <ActivityIndicator size="large" color="#4A90D9"/>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <ActivityIndicator size="large" color="#4A90D9" />
       </View>
     );
   }
@@ -59,7 +59,7 @@ const checkLogin = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {loggedIn ? (
+        {user ? (
           <Stack.Screen name="MainTabs" component={MainTabs} />
         ) : (
           <Stack.Screen name="Auth" component={AuthStack} />

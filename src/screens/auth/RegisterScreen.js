@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../../config/firebase';
 
 export default function RegisterScreen({ navigation }) {
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmar, setConfirmar] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!nombre || !email || !password || !confirmar) {
       alert('Por favor completa todos los campos');
       return;
@@ -16,10 +20,25 @@ export default function RegisterScreen({ navigation }) {
       alert('Las contraseñas no coinciden');
       return;
     }
-    const usuario = { nombre, email, password };
-    localStorage.setItem('userData', JSON.stringify(usuario));
-    localStorage.setItem('userToken', email);
-    window.location.reload();
+    if (password.length < 6) {
+      alert('La contraseña debe tener al menos 6 caracteres');
+      return;
+    }
+    setLoading(true);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(userCredential.user, { displayName: nombre });
+      await setDoc(doc(db, 'usuarios', userCredential.user.uid), {
+        nombre,
+        email,
+        uid: userCredential.user.uid,
+        createdAt: new Date().toISOString(),
+      });
+      window.location.reload();
+    } catch (e) {
+      alert('Error al registrar: ' + e.message);
+    }
+    setLoading(false);
   };
 
   return (
@@ -28,10 +47,10 @@ export default function RegisterScreen({ navigation }) {
       <Text style={styles.subtitle}>Únete a la comunidad</Text>
       <TextInput style={styles.input} placeholder="Nombre completo" value={nombre} onChangeText={setNombre} />
       <TextInput style={styles.input} placeholder="Correo electrónico" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
-      <TextInput style={styles.input} placeholder="Contraseña" value={password} onChangeText={setPassword} secureTextEntry />
+      <TextInput style={styles.input} placeholder="Contraseña (min. 6 caracteres)" value={password} onChangeText={setPassword} secureTextEntry />
       <TextInput style={styles.input} placeholder="Confirmar contraseña" value={confirmar} onChangeText={setConfirmar} secureTextEntry />
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Registrarse</Text>
+      <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={loading}>
+        <Text style={styles.buttonText}>{loading ? 'Registrando...' : 'Registrarse'}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Text style={styles.link}>¿Ya tienes cuenta? Inicia sesión</Text>

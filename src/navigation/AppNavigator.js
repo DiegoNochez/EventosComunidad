@@ -8,6 +8,8 @@ import { ActivityIndicator, View } from 'react-native';
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import ProfileScreen from '../screens/profile/ProfileScreen';
+import SocialScreen from '../screens/SocialScreen';
+import HistorialScreen from '../screens/HistorialScreen';
 import EventsScreen from '../screens/events/EventsScreen';
 
 const Stack = createStackNavigator();
@@ -17,6 +19,8 @@ function MainTabs() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Eventos" component={EventsScreen} />
+      <Tab.Screen name="Social" component={SocialScreen} />
+      <Tab.Screen name="Historial" component={HistorialScreen} />
       <Tab.Screen name="Perfil" component={ProfileScreen} />
     </Tab.Navigator>
   );

@@ -2,26 +2,32 @@
 
 Aplicación móvil desarrollada en React Native que permite a una comunidad local gestionar eventos y actividades comunitarias.
 
-## Integrantes
-| Nombre | GitHub | Rol |
-|--------|--------|-----|
-| Diego Nochez | @DiegoNochez | Autenticación, Navegación, UI/UX |
-| Jimmy | @jimmmyrmp | Gestión de Eventos, RSVP |
-| Nelson | @Nelsonhc22 | Interacción Social, Historial |
+## Grupo Teórico 1 — Equipo 12
 
-## Grupo Teórico
-[Agregar número de grupo]
+## Integrantes
+| Nombre | GitHub |
+|--------|--------|
+| Diego Nochez | [@DiegoNochez](https://github.com/DiegoNochez) |
+| Jimmy Melendez | [@jimmmyrmp](https://github.com/jimmmyrmp) |
+| Nelson | [@Nelsonhc22](https://github.com/Nelsonhc22) |
+
+## Descripción
+Aplicación móvil que permite a una comunidad local gestionar eventos y actividades comunitarias. Facilita la creación y organización de eventos, así como la gestión de la participación de los usuarios.
 
 ## Tecnologías
-- React Native con Expo SDK 54
+- React Native con Expo SDK 56
+- Firebase Authentication
+- Cloud Firestore
 - React Navigation (Stack + Bottom Tabs)
-- AsyncStorage / localStorage
 
 ## Licencia
 Este proyecto está bajo la licencia [CC0-1.0](LICENSE)
 
 ## Mock Ups
-[Agregar link de Figma]
+[Agregar link de Figma aquí]
+
+## Documentación del Proyecto
+[Agregar link del PDF aquí]
 
 ## Instalación
 ```bash
@@ -31,8 +37,10 @@ npm install --legacy-peer-deps
 npx expo start
 ```
 
-## Guía de Usuario
-1. Abre la app con Expo Go o en el navegador
-2. Regístrate con tu nombre, correo y contraseña
-3. Explora los eventos de tu comunidad
-4. Confirma tu asistencia y deja comentarios
+## Funcionalidades
+- ✅ Registro e inicio de sesión con Firebase
+- ✅ Gestión de eventos (crear, editar, eliminar)
+- ✅ Confirmar asistencia a eventos
+- ✅ Comentarios y calificaciones
+- ✅ Historial y estadísticas de participación
+- ✅ Perfil de usuario

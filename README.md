@@ -24,10 +24,27 @@ Aplicación móvil que permite a una comunidad local gestionar eventos y activid
 Este proyecto está bajo la licencia [CC0-1.0](LICENSE)
 
 ## Mock Ups
-[Agregar link de Figma aquí]
+
+### Login
+![Login](assets/mockups/login.png)
+
+### Registro
+![Registro](assets/mockups/registro.png)
+
+### Eventos
+![Eventos](assets/mockups/eventos.png)
+
+### Social
+![Social](assets/mockups/social.png)
+
+### Historial
+![Historial](assets/mockups/historial.png)
+
+### Perfil
+![Perfil](assets/mockups/perfil.png)
 
 ## Documentación del Proyecto
-[Agregar link del PDF aquí]
+[Ver Documentación Completa](https://drive.google.com/file/d/1dmA5CqqmnSvzwvVfeGlpAyOUwvsKrwOr/view?usp=sharing)
 
 ## Instalación
 ```bash

@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ActivityIndicator, View } from 'react-native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../config/firebase';
+import { Ionicons } from '@expo/vector-icons';
 
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
@@ -18,7 +19,22 @@ const Tab = createBottomTabNavigator();
 
 function MainTabs() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => {
+          const icons = {
+            Eventos: 'calendar',
+            Social: 'chatbubbles',
+            Historial: 'time',
+            Perfil: 'person',
+          };
+          return <Ionicons name={icons[route.name]} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: '#4A90D9',
+        tabBarInactiveTintColor: 'gray',
+      })}
+    >
       <Tab.Screen name="Eventos" component={EventsScreen} />
       <Tab.Screen name="Social" component={SocialScreen} />
       <Tab.Screen name="Historial" component={HistorialScreen} />
